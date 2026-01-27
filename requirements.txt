@@ -1,0 +1,7 @@
+pip~=23.2.1
+typing_extensions~=4.15.0
+cryptography~=46.0.3
+pytest~=8.4.2
+Pygments~=2.19.2
+pluggy~=1.6.0
+iniconfig~=2.3.0
