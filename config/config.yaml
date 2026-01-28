@@ -1,5 +1,0 @@
-default: staging
-environments:
-  local: ""
-  staging: "https://contopt2.qone-dev.com/login"
-  production: ""
