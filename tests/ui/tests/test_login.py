@@ -33,8 +33,7 @@ def test_valid_login(browser_page, base_url, config):
     login.enter_username(USERNAME)
     login.enter_password(PASSWORD)
     login.click_login()
-    base = BasePage(browser_page, base_url)
-    base.open_base()
+    base = BasePage(browser_page)
 
     # Assertions for admin login success
     expect(base.logout_button, "Exit button not visible after admin login").to_be_visible()
@@ -45,7 +44,7 @@ def test_valid_login(browser_page, base_url, config):
 @pytest.mark.order(3)
 def test_logout(browser_page, base_url):
     """Test logout functionality and returning to login page."""
-    base = BasePage(browser_page, base_url)
+    base = BasePage(browser_page)
     login = LoginPage(browser_page, base_url)
 
     # Click logout

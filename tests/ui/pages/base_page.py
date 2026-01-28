@@ -1,8 +1,7 @@
 
 class BasePage:
-    def __init__(self, page, base_url):
+    def __init__(self, page):
         self.page = page
-        self.base_url = base_url
 
         # Header / always visible elements
         self.logout_button = page.get_by_role("button", name="Logout")
@@ -13,8 +12,9 @@ class BasePage:
         self.container_table = page.locator("[data-testid='container-table']")
         self.refresh_button = page.locator("button:has-text('Refresh')")
 
-    def open_base(self, url):
-        """Navigate to a base page."""
+    def goto(self, url):
+        """Navigate to a given URL and return the response."""
         return self.page.goto(url)
 
-
+    def click_logout(self):
+       return self.logout_button.click()
