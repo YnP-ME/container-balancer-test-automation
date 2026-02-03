@@ -82,6 +82,7 @@ jobs:
       - name: Run pytest
         run: |
           cd container-balancer-test-automation
+          export PYTHONPATH=$PWD
           pytest ${{ inputs.tests_path || 'ui/tests' }} \
             --env=${{ inputs.environment || 'staging' }} \
             --junitxml=pytest-report.xml \
