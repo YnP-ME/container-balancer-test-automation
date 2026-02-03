@@ -83,7 +83,7 @@ jobs:
         run: |
           cd container-balancer-test-automation
           export PYTHONPATH=$PWD
-          pytest ${{ inputs.tests_path || 'ui/tests' }} \
+          pytest ${{ inputs.tests_path || 'tests/ui/tests' }} \
             --env=${{ inputs.environment || 'staging' }} \
             --junitxml=pytest-report.xml \
             --alluredir=allure-results || true
