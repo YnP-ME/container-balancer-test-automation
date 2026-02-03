@@ -67,7 +67,7 @@ def browser_page(request, config):
         or config["browser"]["default"]
     )
 
-    headless_mode = os.getenv("CI") == False
+    headless_mode = os.getenv("CI") == "true"
 
     playwright = sync_playwright().start()
 
