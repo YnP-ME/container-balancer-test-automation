@@ -82,12 +82,15 @@ def browser_page(request, config):
 
     context = browser.new_context()
     page = context.new_page()
+    def teardown():
+        page.close()
+        context.close()
+        browser.close()
+        playwright.stop()
 
-    yield page
 
-    context.close()
-    browser.close()
-    playwright.stop()
+    request.addfinalizer(teardown)
+    return page
 
 @pytest.fixture
 def login(browser_page, base_url):

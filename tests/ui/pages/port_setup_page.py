@@ -1,3 +1,5 @@
+import time
+
 from playwright.sync_api import expect
 from tests.ui.pages.base_page import BasePage
 
@@ -8,16 +10,16 @@ class PortSetupPage(BasePage):
         self.base_url = base_url
 
         # ---------- Port Setup page elements ----------
-        self.port_setup_section = page.get_by_text("Ports Setup", exact=True)
-        self.port_setup_content = page.locator("div", has_text="Ports Setup")
-        self.save_changes_btn = page.get_by_role("button", name="Save Changes")
-        self.cancel_btn = page.get_by_role("button", name="Cancel")
+        self.port_setup_section = page.locator("div.cursor-pointer:has-text('Ports Setup')")
+        self.port_setup_content = page.get_by_role("columnheader", name="Port").first
+        self.save_changes_btn = page.get_by_role("button", name="Save Changes").first
+        self.cancel_btn = page.get_by_role("button", name="Cancel").first
 
         # Dropdown / Role button
-        self.role_btn = page.get_by_role("button", name="outbound only")
+        self.role_btn = page.locator("button:has(span.block)").first
 
         # Toggle
-        self.trans_shipment_toggle = page.locator("button[aria-pressed]")
+        self.trans_shipment_toggle = page.locator("button[aria-pressed]").first
 
         # Numeric inputs
         self.cost_storage_input = page.locator("input[type='number'][inputmode='decimal']").nth(0)
@@ -35,6 +37,7 @@ class PortSetupPage(BasePage):
     def open_port_setup(self):
         """Navigate to the Port Setup page."""
         self.port_setup_section.click()
+        time.sleep(2)
 
     def click_save_changes(self):
         expect(self.save_changes_btn).to_be_enabled()
@@ -47,14 +50,17 @@ class PortSetupPage(BasePage):
     # ---------- Dropdown / Role ----------
 
     def select_role(self, role_name: str):
-        """Select a role from the dropdown."""
-        self.role_btn.click()  # open dropdown
+        """Select a role from the dropdown dynamically."""
+        # Click the dropdown button (any current selected role)
+        self.page.locator("button:has(span.block)").first.click()
+
+        # Wait for and click the option dynamically by name
         option = self.page.get_by_role("option", name=role_name)
         option.click()
 
     def get_selected_role(self) -> str:
         """Return the currently selected role."""
-        return self.role_btn.inner_text()
+        return self.role_btn.locator("span.block").inner_text()
 
     # ---------- Toggle ----------
 
@@ -77,18 +83,18 @@ class PortSetupPage(BasePage):
         expect(self.cost_storage_input).to_be_enabled()
         self.cost_storage_input.fill(str(value))
 
-    def get_handling_value(self) -> int:
+    def get_handling_value(self) -> float:
         expect(self.cost_handling_input).to_be_visible()
-        return int(self.cost_handling_input.input_value())
+        return float(self.cost_handling_input.input_value())
 
-    def change_handling_value(self, value: int):
+    def change_handling_value(self, value: float):
         expect(self.cost_handling_input).to_be_enabled()
         self.cost_handling_input.fill(str(value))
 
-    def get_empty_available_value(self) -> int:
+    def get_empty_available_value(self) -> float:
         expect(self.empty_available_input).to_be_visible()
-        return int(self.empty_available_input.input_value())
+        return float(self.empty_available_input.input_value())
 
-    def change_empty_available_value(self, value: int):
+    def change_empty_available_value(self, value: float):
         expect(self.empty_available_input).to_be_enabled()
         self.empty_available_input.fill(str(value))
