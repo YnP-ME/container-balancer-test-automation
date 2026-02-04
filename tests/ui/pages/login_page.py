@@ -11,8 +11,8 @@ class LoginPage(BasePage):
         # ---------- Login page elements ----------
         self.login_page_title = page.get_by_alt_text("Logo ADP")
         self.login_form = page.locator("form")
-        self.username_input = page.locator("#login")
-        self.password_input = page.locator("#password")
+        self.username_input = page.locator('input[placeholder="Enter your login"]')
+        self.password_input = page.locator('input[placeholder="Enter your password"]')
         self.login_button = page.locator('button[type="submit"].bg-brand-500')
         self.invalid_login_error = page.get_by_text("Incorrect login or password", exact=True)
 
