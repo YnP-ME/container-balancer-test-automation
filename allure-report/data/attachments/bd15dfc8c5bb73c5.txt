@@ -1,2 +1,0 @@
-USERNAME exists: True
-PASSWORD exists: True
