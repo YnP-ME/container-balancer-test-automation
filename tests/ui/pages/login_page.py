@@ -32,8 +32,21 @@ class LoginPage(BasePage):
         self.password_input.fill(password)
 
     def click_login(self):
-        """Click the login button."""
+        """Click the login button after credentials are entered."""
+
+        # Wait until the button is enabled
+        self.login_button.wait_for(state="enabled", timeout=10000)
+
+        # Optional: wait until any overlay disappears
+        loader = self.page.locator('[role="status"][aria-busy="true"]')
+        try:
+            loader.wait_for(state="hidden", timeout=30000)
+        except:
+            pass
+
         self.login_button.click()
+
+
 
 
 
