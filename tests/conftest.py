@@ -1,4 +1,6 @@
 import os
+import time
+
 import yaml
 import pytest
 from dotenv import load_dotenv
@@ -99,5 +101,6 @@ def login(browser_page, base_url):
     login.open_login()
     login.enter_username(USERNAME)
     login.enter_password(PASSWORD)
+    time.sleep(3)
     login.click_login()
     expect(base.logout_button, "Exit button not visible after admin login").to_be_visible()
