@@ -76,6 +76,7 @@ class PortSetupPage(BasePage):
     # ---------- Numeric fields ----------
 
     def get_storage_value(self) -> int:
+        time.sleep(3)
         expect(self.cost_storage_input).to_be_visible()
         return int(self.cost_storage_input.input_value())
 

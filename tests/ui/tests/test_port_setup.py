@@ -1,3 +1,5 @@
+import time
+
 import pytest
 from playwright.sync_api import expect
 from tests.ui.pages.port_setup_page import PortSetupPage
@@ -51,6 +53,7 @@ def test_update_numeric_fields(browser_page, base_url):
 def test_optimization_result_page(browser_page, base_url):
     """Verify Optimization Result page is loaded after Port Setup changes."""
     opt_result = Optimization_Result_Page(browser_page, base_url)
+    time.sleep(5)
     # Use expect for visibility with descriptive message
     expect(opt_result.optimization_result_section, "Optimization Result section is not visible").to_be_visible()
 
