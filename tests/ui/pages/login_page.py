@@ -14,7 +14,7 @@ class LoginPage(BasePage):
         self.login_form = page.locator("form")
         self.username_input = page.locator("#login")
         self.password_input = page.locator("#password")
-        self.login_button = page.get_by_role("button", name="Login")
+        self.login_button = page.get_by_role("button", name="Login", exact=True)
         self.invalid_login_error = page.get_by_text("Incorrect login or password", exact=True)
 
 
@@ -34,7 +34,6 @@ class LoginPage(BasePage):
     def click_login(self):
         """Click the login button."""
         self.login_button.click()
-        time.sleep(3)
 
 
 
