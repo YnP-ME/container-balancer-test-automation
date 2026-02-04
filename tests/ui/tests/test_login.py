@@ -25,14 +25,13 @@ def test_login_page_elements_before_login(browser_page, base_url):
     expect(login.login_button, "Login button is not visible").to_be_visible()
 
 @pytest.mark.order(2)
-def test_valid_login(browser_page, base_url, config):
+def test_login(browser_page, base_url):
     """User can log in successfully and see expected elements."""
     login = LoginPage(browser_page, base_url)
-    print("USERNAME exists:", USERNAME )
-    print("PASSWORD exists:", PASSWORD )
     login.enter_username(USERNAME)
     login.enter_password(PASSWORD)
     login.click_login()
+
     base = BasePage(browser_page)
 
     # Assertions for admin login success
@@ -55,3 +54,4 @@ def test_logout(browser_page, base_url):
     expect(login.username_input, "Username input is not visible").to_be_visible()
     expect(login.password_input, "Password input is not visible").to_be_visible()
     expect(login.login_button, "Login button is not visible").to_be_visible()
+    print("doneee")
