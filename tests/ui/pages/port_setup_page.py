@@ -52,8 +52,9 @@ class PortSetupPage(BasePage):
     def select_role(self, role_name: str):
         """Select a role from the dropdown dynamically."""
         # Click the dropdown button (any current selected role)
-        self.page.locator("button:has(span.block)").first.click()
-
+        dropdown = self.page.locator("div:has-text('Role') button")
+        expect(dropdown).to_be_visible(timeout=10000)
+        dropdown.click()
         # Wait for and click the option dynamically by name
         option = self.page.get_by_role("option", name=role_name)
         option.click()
@@ -76,8 +77,7 @@ class PortSetupPage(BasePage):
     # ---------- Numeric fields ----------
 
     def get_storage_value(self) -> int:
-        time.sleep(3)
-        expect(self.cost_storage_input).to_be_visible()
+        expect(self.cost_storage_input).to_be_visible(timeout=20000)
         return int(self.cost_storage_input.input_value())
 
     def change_storage_value(self, value: int):
