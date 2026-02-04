@@ -33,8 +33,12 @@ class LoginPage(BasePage):
 
     def click_login(self):
         # Wait until button is enabled AND visible
-        self.login_button.wait_for(state="visible", timeout=30000)
-        self.login_button.wait_for(state="enabled", timeout=30000)
+        loader = self.page.locator('[role="status"][aria-busy="true"]')
+        # Wait for overlay to disappear
+        try:
+            loader.wait_for(state="hidden", timeout=30000)
+        except:
+            pass
         # Click when fully ready
         self.login_button.click()
 
