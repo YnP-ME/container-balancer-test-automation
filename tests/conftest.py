@@ -44,6 +44,7 @@ def pytest_addoption(parser):
 def config():
     return load_config()
 
+
 @pytest.fixture(scope="session")
 def base_url(request, config):
     active_env = (
@@ -59,12 +60,13 @@ def base_url(request, config):
 
 @pytest.fixture
 def browser_page():
+    """Start a fresh browser per test (sync)"""
     playwright = sync_playwright().start()
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
 
-    yield page   # test runs here
+    yield page  # test runs here
 
     context.close()
     browser.close()
@@ -73,10 +75,11 @@ def browser_page():
 
 @pytest.fixture
 def login(browser_page, base_url):
+    """Login fixture for tests, ensures fresh URL and visible logout button."""
     base = BasePage(browser_page)
     login_page = LoginPage(browser_page, base_url)
 
-    # Always start from clean URL
+    # Always start from a clean URL
     browser_page.goto(base_url)
 
     login_page.open_login()
@@ -84,5 +87,7 @@ def login(browser_page, base_url):
     login_page.enter_password(PASSWORD)
     login_page.click_login()
 
-    # Strong sync point (important)
-    expect(base.logout_button).to_be_visible()
+    # Strong sync point: wait for logout button (ensures page is fully loaded)
+    expect(base.logout_button, "Exit button not visible after login").to_be_visible(timeout=10000)
+
+    return browser_page  # returning browser_page makes it available in your tests
