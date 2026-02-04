@@ -40,8 +40,8 @@ jobs:
       pages: write
 
     env:
-      EMPLOYEE_USERNAME: ${{ vars.USERNAME }}
-      EMPLOYEE_PASSWORD: ${{ vars.PASSWORD }}
+      EMPLOYEE_USERNAME: ${{ secrets.USERNAME }}
+      EMPLOYEE_PASSWORD: ${{ secrets.PASSWORD }}
 
     steps:
       - name: Checkout TestAutomation repo
