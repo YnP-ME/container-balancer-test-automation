@@ -50,13 +50,13 @@ class PortSetupPage(BasePage):
     # ---------- Dropdown / Role ----------
 
     def select_role(self, role_name: str):
-        """Select a role from the dropdown dynamically."""
-        # Click the dropdown button (any current selected role)
-        dropdown = self.page.locator("div:has-text('Role') button")
+        # Click the dropdown
+        dropdown = self.page.locator("button:has(svg)").first
         expect(dropdown).to_be_visible(timeout=10000)
         dropdown.click()
-        # Wait for and click the option dynamically by name
+
         option = self.page.get_by_role("option", name=role_name)
+        expect(option).to_be_visible(timeout=10000)
         option.click()
 
     def get_selected_role(self) -> str:

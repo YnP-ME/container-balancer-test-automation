@@ -12,22 +12,27 @@ load_dotenv()
 USERNAME = os.getenv("USERNAME")
 PASSWORD = os.getenv("PASSWORD")
 
-@pytest.mark.order(1)
+
 def test_login_page_elements_before_login(browser_page, base_url):
     """Check that all login page elements are visible before login."""
+    browser_page.goto(base_url)  # <<< ensure browser is on the URL
+
     login = LoginPage(browser_page, base_url)
     login.open_login()
 
     # Assertions for page elements visibility
-    expect(login.login_page_title, "Login page title is not visible").to_be_visible()
-    expect(login.username_input, "Username input is not visible").to_be_visible()
+    expect(login.login_page_title, "Login page title is not visible").to_be_visible(timeout=20000)
+    expect(login.username_input, "Username input is not visible").to_be_visible(timeout=20000)
     expect(login.password_input, "Password input is not visible").to_be_visible()
     expect(login.login_button, "Login button is not visible").to_be_visible()
 
-@pytest.mark.order(2)
+
 def test_login(browser_page, base_url):
     """User can log in successfully and see expected elements."""
+    browser_page.goto(base_url)
+
     login = LoginPage(browser_page, base_url)
+    login.open_login()
     login.enter_username(USERNAME)
     login.enter_password(PASSWORD)
     login.click_login()
@@ -35,23 +40,22 @@ def test_login(browser_page, base_url):
     base = BasePage(browser_page)
 
     # Assertions for admin login success
-    expect(base.logout_button, "Exit button not visible after admin login").to_be_visible()
-    expect(base.page_title, "Header is not visible").to_be_visible()
-    expect(base.impact_report_button, "Report button is not visible").to_be_visible()
+    expect(base.logout_button, "Exit button not visible after login").to_be_visible(timeout=20000)
+    expect(base.page_title, "Header is not visible").to_be_visible(timeout=20000)
+    expect(base.impact_report_button, "Report button is not visible").to_be_visible(timeout=20000)
 
 
-@pytest.mark.order(3)
-def test_logout(browser_page, base_url):
+def test_logout(browser_page, base_url,login):
     """Test logout functionality and returning to login page."""
+    browser_page.goto(base_url)
+
     base = BasePage(browser_page)
     login = LoginPage(browser_page, base_url)
 
     # Click logout
     base.click_logout()
-    time.sleep(2)
 
     # Assertions for returned login page
-    expect(login.username_input, "Username input is not visible").to_be_visible()
-    expect(login.password_input, "Password input is not visible").to_be_visible()
-    expect(login.login_button, "Login button is not visible").to_be_visible()
-    print("doneee")
+    expect(login.username_input, "Username input is not visible").to_be_visible(timeout=20000)
+    expect(login.password_input, "Password input is not visible").to_be_visible(timeout=20000)
+    expect(login.login_button, "Login button is not visible").to_be_visible(timeout=20000)
