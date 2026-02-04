@@ -28,7 +28,6 @@ def test_login_page_elements_before_login(browser_page, base_url):
 def test_valid_login(browser_page, base_url, config):
     """User can log in successfully and see expected elements."""
     login = LoginPage(browser_page, base_url)
-    login.open_login()
     print("USERNAME exists:", USERNAME is not None)
     print("PASSWORD exists:", PASSWORD is not None)
     login.enter_username(USERNAME)
