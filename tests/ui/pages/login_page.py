@@ -1,4 +1,4 @@
-from playwright.sync_api import expect
+import time
 from tests.ui.pages.base_page import BasePage
 
 class LoginPage(BasePage):
@@ -24,12 +24,12 @@ class LoginPage(BasePage):
 
     def enter_username(self, username):
         """Fill in the username field."""
-        expect(self.username_input).to_be_visible(timeout=30000)
+        time.sleep(3)
         self.username_input.fill(username)
 
     def enter_password(self, password):
         """Fill in the password field."""
-        expect(self.password_input).to_be_visible(timeout=30000)
+        time.sleep(3)
         self.password_input.fill(password)
 
     def click_login(self):

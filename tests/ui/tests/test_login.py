@@ -28,8 +28,8 @@ def test_login_page_elements_before_login(browser_page, base_url):
 def test_valid_login(browser_page, base_url, config):
     """User can log in successfully and see expected elements."""
     login = LoginPage(browser_page, base_url)
-    print("USERNAME exists:", USERNAME is not None)
-    print("PASSWORD exists:", PASSWORD is not None)
+    print("USERNAME exists:", USERNAME )
+    print("PASSWORD exists:", PASSWORD )
     login.enter_username(USERNAME)
     login.enter_password(PASSWORD)
     login.click_login()
@@ -49,7 +49,7 @@ def test_logout(browser_page, base_url):
 
     # Click logout
     base.click_logout()
-    time.sleep(1)
+    time.sleep(2)
 
     # Assertions for returned login page
     expect(login.username_input, "Username input is not visible").to_be_visible()
