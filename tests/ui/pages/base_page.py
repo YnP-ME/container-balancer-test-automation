@@ -18,3 +18,9 @@ class BasePage:
 
     def click_logout(self):
        return self.logout_button.click()
+
+    def is_logged_in(self):
+        try:
+            return self.logout_button.is_visible()
+        except:
+            return False

@@ -1,11 +1,8 @@
 import os
-import time
-
 import yaml
 import pytest
 from dotenv import load_dotenv
-from playwright.sync_api import sync_playwright
-from playwright.sync_api import expect
+from playwright.sync_api import sync_playwright, expect
 from ui.pages.login_page import LoginPage
 from ui.pages.base_page import BasePage
 
@@ -47,7 +44,6 @@ def pytest_addoption(parser):
 def config():
     return load_config()
 
-
 @pytest.fixture(scope="session")
 def base_url(request, config):
     active_env = (
@@ -61,45 +57,32 @@ def base_url(request, config):
     return url
 
 
-@pytest.fixture(scope="session")
-def browser_page(request, config):
-    browser_name = (
-        request.config.getoption("--browser")
-        or os.getenv("BROWSER")
-        or config["browser"]["default"]
-    )
-
-    headless_mode = os.getenv("CI") == "true"
-
+@pytest.fixture
+def browser_page():
     playwright = sync_playwright().start()
-
-    if browser_name == "chromium":
-        browser = playwright.chromium.launch(headless=headless_mode)
-    elif browser_name == "firefox":
-        browser = playwright.firefox.launch(headless=headless_mode)
-    elif browser_name == "webkit":
-        browser = playwright.webkit.launch(headless=headless_mode)
-    else:
-        raise ValueError(f"Unknown browser: {browser_name}")
-
+    browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
-    def teardown():
-        page.close()
-        context.close()
-        browser.close()
-        playwright.stop()
 
+    yield page   # test runs here
 
-    request.addfinalizer(teardown)
-    return page
+    context.close()
+    browser.close()
+    playwright.stop()
+
 
 @pytest.fixture
 def login(browser_page, base_url):
     base = BasePage(browser_page)
-    login = LoginPage(browser_page, base_url)
-    login.open_login()
-    login.enter_username(USERNAME)
-    login.enter_password(PASSWORD)
-    login.click_login()
-    expect(base.logout_button, "Exit button not visible after admin login").to_be_visible()
+    login_page = LoginPage(browser_page, base_url)
+
+    # Always start from clean URL
+    browser_page.goto(base_url)
+
+    login_page.open_login()
+    login_page.enter_username(USERNAME)
+    login_page.enter_password(PASSWORD)
+    login_page.click_login()
+
+    # Strong sync point (important)
+    expect(base.logout_button).to_be_visible()
