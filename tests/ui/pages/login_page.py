@@ -1,3 +1,5 @@
+import time
+
 from tests.ui.pages.base_page import BasePage
 
 class LoginPage(BasePage):
@@ -32,6 +34,8 @@ class LoginPage(BasePage):
     def click_login(self):
         """Click the login button."""
         self.login_button.click()
+        time.sleep(3)
+
 
 
 
