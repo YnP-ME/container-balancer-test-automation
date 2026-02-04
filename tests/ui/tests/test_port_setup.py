@@ -53,9 +53,8 @@ def test_update_numeric_fields(browser_page, base_url):
 def test_optimization_result_page(browser_page, base_url):
     """Verify Optimization Result page is loaded after Port Setup changes."""
     opt_result = Optimization_Result_Page(browser_page, base_url)
-    time.sleep(5)
     # Use expect for visibility with descriptive message
-    expect(opt_result.optimization_result_section, "Optimization Result section is not visible").to_be_visible()
+    expect(opt_result.optimization_result_section, "Optimization Result section is not visible").to_be_visible(timeout=20000)
 
 @pytest.mark.order(4)
 def test_cancel_button(browser_page, base_url):

@@ -8,7 +8,7 @@ class Optimization_Result_Page(BasePage):
         self.base_url = base_url
 
         # ---------- Optimization Result  page elements ----------
-        self.optimization_result_section = page.get_by_text("Optimization Result (12 weeks)")
+        self.optimization_result_section = page.get_by_text("Optimization Result", exact=False)
         self.optimization_result_table_container = page.locator("div.min-h-0.flex-1.overflow-y-auto")
 
     def is_page_opened(self):

@@ -24,12 +24,10 @@ class LoginPage(BasePage):
 
     def enter_username(self, username):
         """Fill in the username field."""
-        time.sleep(3)
         self.username_input.fill(username)
 
     def enter_password(self, password):
         """Fill in the password field."""
-        time.sleep(3)
         self.password_input.fill(password)
 
     def click_login(self):
