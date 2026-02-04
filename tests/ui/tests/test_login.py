@@ -29,7 +29,8 @@ def test_valid_login(browser_page, base_url, config):
     """User can log in successfully and see expected elements."""
     login = LoginPage(browser_page, base_url)
     login.open_login()
-
+    print("USERNAME exists:", USERNAME is not None)
+    print("PASSWORD exists:", PASSWORD is not None)
     login.enter_username(USERNAME)
     login.enter_password(PASSWORD)
     login.click_login()
