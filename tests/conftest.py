@@ -23,7 +23,7 @@ def load_config():
         return yaml.safe_load(f)
 
 
-# ---------- CLI options (HOOK) ----------
+# ---------- CLI options ----------
 def pytest_addoption(parser):
     parser.addoption(
         "--browser",
@@ -52,7 +52,6 @@ def base_url(request, config):
         or os.getenv("TEST_ENV")
         or config.get("default_env", "staging")
     )
-
     url = config["environments"][active_env]
     print(f"\nRunning tests against: {active_env} → {url}")
     return url
@@ -60,13 +59,13 @@ def base_url(request, config):
 
 @pytest.fixture
 def browser_page():
-    """Start a fresh browser per test (sync)"""
+    """Start a fresh browser per test (sync). Works without async."""
     playwright = sync_playwright().start()
     browser = playwright.chromium.launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
 
-    yield page  # test runs here
+    yield page
 
     context.close()
     browser.close()
@@ -75,19 +74,15 @@ def browser_page():
 
 @pytest.fixture
 def login(browser_page, base_url):
-    """Login fixture for tests, ensures fresh URL and visible logout button."""
+    """Login fixture for tests (sync)"""
     base = BasePage(browser_page)
     login_page = LoginPage(browser_page, base_url)
 
-    # Always start from a clean URL
     browser_page.goto(base_url)
-
     login_page.open_login()
     login_page.enter_username(USERNAME)
     login_page.enter_password(PASSWORD)
     login_page.click_login()
 
-    # Strong sync point: wait for logout button (ensures page is fully loaded)
-    expect(base.logout_button, "Exit button not visible after login").to_be_visible(timeout=10000)
-
-    return browser_page  # returning browser_page makes it available in your tests
+    expect(base.logout_button).to_be_visible(timeout=10000)
+    return browser_page
