@@ -1,4 +1,3 @@
-import pytest
 from playwright.sync_api import expect
 from tests.ui.pages.port_setup_page import PortSetupPage
 from tests.ui.pages.optimization_results_page import Optimization_Result_Page
@@ -31,7 +30,7 @@ def test_update_numeric_fields(browser_page, base_url, login):
 
     port_page.click_save_changes()
 
-    expect(opt_result.optimization_result_section).to_be_visible(timeout=20000)
+    expect(opt_result.opt_result_section).to_be_visible(timeout=20000)
 
     port_page.open_port_setup()
 
