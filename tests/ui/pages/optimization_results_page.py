@@ -1,4 +1,5 @@
 import shutil
+import time
 from pathlib import Path
 from playwright.sync_api import expect
 
@@ -10,19 +11,21 @@ class Optimization_Result_Page:
 
         # -------- Main page --------
         self.opt_result_header = page.get_by_text("Optimization Result", exact=False)
-        self.opt_result_table = page.locator("div.min-h-0.flex-1.overflow-y-auto")
-        self.opt_result_section = page.get_by_text("Optimization Result")
+        self.opt_result_table = page.locator("div.min-h-0.flex-1.overflow-y-auto").nth(3)
+        self.opt_result_section = page.locator('(//div[@class="rotate-180"])[3]/..')
 
         self.service_view_button = page.get_by_role("button", name="Service View")
         self.port_view_button = page.get_by_role("button", name="Port View")
 
-        self.total_cost_section = page.locator("section:has-text('Total Cost')")
+        self.total_cost_section = page.locator("(//section[.//div[text()='Total Cost']])[2]")
         self.download_csv_button = page.get_by_role("link", name="Download CSV")
 
         # -------- Dropdowns --------
-        self.service_dropdown = page.locator("div.py-2.pr-4.align-top >> svg")
-        self.vessel_dropdown = page.locator("div.py-2.text-sm.text-gray-900").nth(0).locator("xpath=preceding-sibling::svg | following-sibling::svg")
-        self.departure_date_dropdown = page.locator("div.py-2.text-sm.text-gray-900").nth(1).locator("xpath=preceding-sibling::svg | following-sibling::svg")
+        self.service_dropdown = page.locator("(//div[@class='flex items-center'])[1]/div[@class='ml-1 flex flex-col']")
+
+
+        self.vessel_dropdown = page.locator("(//div[@class='flex items-center'])[2]/div[@class='ml-1 flex flex-col']")
+        self.departure_date_dropdown = page.locator("(//div[@class='flex items-center'])[6]/div[@class='ml-1 flex flex-col']")
 
         # -------- Port view --------
         self.port_view_table = page.locator("div.table-scrollbar table")
@@ -56,17 +59,16 @@ class Optimization_Result_Page:
     # ---------- Service / Vessel / Date ----------
 
     def get_service_name(self) -> str:
-        return self.page.locator("div.py-2.pr-4.align-top").inner_text()
+        return self.page.locator("div.py-2.pr-4.align-top").nth(0).inner_text()
 
     def click_service_dropdown(self):
-        self.service_dropdown.click()
+        self.service_dropdown.dblclick()
 
     def get_vessel_name(self) -> str:
         return self.page.locator("div.py-2.text-sm.text-gray-900").nth(0).inner_text()
 
     def click_vessel_dropdown(self):
-        self.page.locator("svg.transition-colors.fill-black").first.click()
-
+        self.vessel_dropdown.dblclick()
     def get_departure_date(self) -> str:
         return self.page.locator("div.py-2.text-sm.text-gray-900").nth(1).inner_text()
 

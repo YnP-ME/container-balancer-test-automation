@@ -75,7 +75,7 @@ def browser_page(playwright_instance, request):
 
     browser_name = request.config.getoption("--browser")
 
-    browser = getattr(playwright_instance, browser_name).launch(headless=True)
+    browser = getattr(playwright_instance, browser_name).launch(headless=False)
     context = browser.new_context()
     page = context.new_page()
 
